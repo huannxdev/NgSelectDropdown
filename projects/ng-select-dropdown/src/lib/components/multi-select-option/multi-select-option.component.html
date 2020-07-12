@@ -1,0 +1,8 @@
+<li class="element" [ngClass]="{'uncheck': !checked, 'checked': checked}">
+    <div class="ui-checkbox">
+        <div class="ui-checkbox--box">
+            <span class="ui-checkbox-icon" [ngClass]="{'pi': checked}"></span>
+        </div>
+    </div>
+    <span class="element--label">{{label}}</span>
+</li>

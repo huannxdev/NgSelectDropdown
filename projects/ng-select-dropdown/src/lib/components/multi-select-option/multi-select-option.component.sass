@@ -1,0 +1,60 @@
+.element
+  margin: 0
+  padding: 0.429em 0.857em
+  border: 0 none
+  color: #333333
+  display: flex
+  align-items: center
+  cursor: pointer
+  height: 48px
+  .ui-checkbox
+    position: static
+    display: inline-block
+    vertical-align: middle
+    margin: 0 0.5em 0 0
+    &--box
+      border: 1px solid #a6a6a6
+      width: 20px
+      height: 20px
+      text-align: center
+
+    &--icon
+      overflow: hidden
+      position: relative
+      font-size: 18px
+  
+  span 
+    display: inline-block
+    vertical-align: middle
+  
+  &--label
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
+  .pi
+    font-family: primeicons
+    speak: none
+    font-style: normal
+    font-weight: 400
+    font-variant: normal
+    text-transform: none
+    line-height: 1
+    transition: all .2s
+    font-family: 'Lucida Sans Unicode', 'Arial Unicode MS', Arial
+
+  .pi:before
+    content: "\2713\0020"
+    color: #fff
+
+.uncheck:hover
+  background-color: #eaeaea
+
+.checked .ui-checkbox
+  .ui-checkbox--box
+    background-color: #007D40 
+
+.unchecked .ui-checkbox
+  .ui-checkbox--box
+    background-color: #fff
+    

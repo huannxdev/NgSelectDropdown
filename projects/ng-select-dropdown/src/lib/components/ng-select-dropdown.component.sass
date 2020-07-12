@@ -1,0 +1,148 @@
+\:host
+    width: 100%
+    span.title
+        font-size: 14px
+        color: #999999
+        letter-spacing: 0
+        line-height: 20px
+        margin-bottom: 6px
+    .select2
+        display: flex
+        flex-direction: column
+        height: 48px
+        margin-top: 6px
+        .single
+            cursor: pointer !important
+        .list-item
+            border: 1px solid #d6d6d6
+            background: #fff
+            display: flex
+            align-items: center
+            height: 100%
+
+            .tag-editor 
+                list-style-type: none
+                padding: 0
+                margin: 0
+                cursor: text
+                font-size: 1rem
+                color: #000000
+                -webkit-border-radius: 4px
+                border-radius: 4px
+                list-style: none
+                flex-grow: 1
+                display: flex
+                overflow: hidden
+                height: 100%
+                align-items: center
+                padding-left: 12px
+
+                .elements
+                    width: fit-content
+                    height: 100%
+                    white-space: nowrap
+                    display: flex
+                    align-items: center
+                    max-width: calc(100% - 20px)
+
+                    div.single-tag
+                        background: none
+                        padding-left: 4px
+                        font-size: 16px
+
+                    
+                    div
+                        display: flex
+                        float: left
+                        overflow: visible
+                        margin: 0 0
+                        line-height: 1.5
+                        height: 28px
+                        align-items: center
+                        padding-left: 8px
+                        background: #F5F5F5
+                    
+
+                        div
+                            float: left
+                        
+                        .tag-editor-tag
+                            color: #000000 
+                            white-space: nowrap
+                            overflow: hidden
+                            cursor: pointer
+                            height: 100%
+                            display: flex
+                            align-items: center
+                            padding-left: 8px
+                            font-size: 16px
+                            letter-spacing: 0
+                            line-height: 20px
+
+                        .tag-editor-delete
+                            cursor: pointer
+                            display: flex
+                            align-items: center
+                            height: 100%
+                            margin-left: 0
+                            margin-right: 0
+                            width: 25px
+
+                            .material-icons
+                                font-size: 17px
+
+                    .placeHolder-text
+                        font-size: 16px
+                        line-height: 24px
+                        color: #999
+
+
+                    div:not(:first-child)
+                        margin-left: 12px
+            .more-text
+                padding-left: 5px        
+
+            .action 
+                height: 100%
+                display: flex
+                align-items: center
+                cursor: pointer
+                padding-right: 12px
+
+    .disable
+        opacity: 0.6
+    
+    .more-content
+        background-color: #F5F5F5
+        border-radius: 5px
+        width: 20px
+        text-align: center
+        margin-left: 10px
+
+.dropdown-options-container 
+    width: 100%
+    border-radius: 3px
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,.24)
+    display: block
+    overflow-x: hidden
+    margin-top: 4px
+    padding-top: 12px
+    padding-bottom: 12px
+    background-color: #fff
+    overflow-y: hidden
+
+    .scroll-container
+        height: 100%
+        overflow-y: auto
+
+    .group
+        &-title
+            margin-left: 10px
+            font-weight: 700
+        
+        &-element
+            margin-bottom: 20px
+        
+
+    
+

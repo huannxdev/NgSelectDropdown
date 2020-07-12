@@ -15,6 +15,12 @@
     },
     {
       "path": "./e2e/tsconfig.json"
+    },
+    {
+      "path": "./projects/ng-select-dropdown/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/ng-select-dropdown/tsconfig.spec.json"
     }
 ]
 }

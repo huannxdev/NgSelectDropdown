@@ -1,0 +1,22 @@
+<div style="height: 100%; overflow-y: auto; overflow-x: hidden;">
+    <ng-container *ngIf="!group; else groupContainer">
+        <div class="single-item" *ngFor="let option of options" [ngClass]="{ actived: option.value === activedItemValue }" (click)="select(option)" id="item-{{ option.value | formatIdString }}">
+            <span class="single-item--label">{{ option.label }}</span>
+        </div>
+    </ng-container>
+    <ng-template #groupContainer>
+        <div class="group" *ngFor="let group of options">
+            <ng-container *ngIf="group.items && group.items.length > 0">
+                <span class="title">{{ group.label }}</span>
+                <div class="single-item group-item" *ngFor="let option of group.items" [ngClass]="{ actived: option.value === activedItemValue }" (click)="select(option)" id="item-{{ option.value | formatIdString}}">
+                    <span class="single-item--label">{{ option.label }}</span>
+                    <button mat-icon-button (click)="remove(option.value)" *ngIf="option.canDelete">
+          <span class="material-icons">
+            close
+            </span>
+          </button>
+                </div>
+            </ng-container>
+        </div>
+    </ng-template>
+</div>

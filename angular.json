@@ -28,6 +28,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/custom-theme.scss",
               "src/styles.sass"
             ],
             "scripts": []
@@ -123,6 +124,47 @@
           }
         }
       }
-    }},
+    },
+    "NgSelectDropdown": {
+      "projectType": "library",
+      "root": "projects/ng-select-dropdown",
+      "sourceRoot": "projects/ng-select-dropdown/src",
+      "prefix": "ng",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ng-select-dropdown/tsconfig.lib.json",
+            "project": "projects/ng-select-dropdown/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ng-select-dropdown/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ng-select-dropdown/src/test.ts",
+            "tsConfig": "projects/ng-select-dropdown/tsconfig.spec.json",
+            "karmaConfig": "projects/ng-select-dropdown/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ng-select-dropdown/tsconfig.lib.json",
+              "projects/ng-select-dropdown/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
   "defaultProject": "ng-select-dropdown"
 }
