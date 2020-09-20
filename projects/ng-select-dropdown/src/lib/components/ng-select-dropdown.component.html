@@ -35,18 +35,22 @@
               </svg>
         </div>
     </div>
-    <lib-custom-dropdown [reference]="dropreference" #dropdownComp>
+    <lib-custom-dropdown [reference]="dropreference" #dropdownComp (eventClosed)="onDropdownClosed()">
         <div class="dropdown-options-container">
+            <div class="search">
+                <input type="text" [formControl]="searchControl" />
+                <div class="add-btn" (click)="addOption()" *ngIf="searchControl.value && currentOptions.length === 0">Add</div>
+            </div>
             <ng-container *ngIf="multiple">
                 <div class="scroll-container" [ngClass]="{group: group}">
-                    <ng-container *ngFor="let option of options">
+                    <ng-container *ngFor="let option of currentOptions">
                         <ng-container *ngTemplateOutlet="group ? groupMultipleSelect : multileSelect; context: {$implicit: option}">
                         </ng-container>
                     </ng-container>
                 </div>
             </ng-container>
             <ng-container *ngIf="!multiple">
-                <lib-single-select-container [options]="options" [activedItemValue]="dataSingle" [group]="group" (selectItemEmitter)="selectSingle($event)" (removeItemEmitter)="handleRemoveElementOption($event)"></lib-single-select-container>
+                <lib-single-select-container [options]="currentOptions" [activedItemValue]="dataSingle" [group]="group" (selectItemEmitter)="selectSingle($event)" (removeItemEmitter)="handleRemoveElementOption($event)"></lib-single-select-container>
             </ng-container>
         </div>
     </lib-custom-dropdown>

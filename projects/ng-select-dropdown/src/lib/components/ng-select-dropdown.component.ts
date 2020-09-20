@@ -10,17 +10,19 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Output,
   QueryList,
   SimpleChanges,
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormBuilder, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { DropdownService } from '../providers/dropdown.service';
 import { MultiSelectOptionComponent } from './multi-select-option/multi-select-option.component';
 import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { NameValueSelect } from '../model/NameValue.model';
 import { NameValueGroup } from '../model/NameValueGroup.model';
 
@@ -38,7 +40,7 @@ import { NameValueGroup } from '../model/NameValueGroup.model';
   templateUrl: './ng-select-dropdown.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NgSelectDropdownComponent implements AfterViewInit, OnDestroy, OnChanges {
+export class NgSelectDropdownComponent implements AfterViewInit, OnDestroy, OnChanges, OnInit {
   @ViewChild('tagBlock')
   public tagBlock: ElementRef;
   @ViewChild(DropdownComponent)
@@ -56,7 +58,10 @@ export class NgSelectDropdownComponent implements AfterViewInit, OnDestroy, OnCh
   @Input()
   public isDisabled: boolean;
   @Input()
-  public options: NameValueSelect[] | NameValueGroup[] = [];
+  set options(optionsInput: NameValueSelect[] | NameValueGroup[]) {
+    this.orginalOptions = optionsInput;
+    this.currentOptions = optionsInput;
+  }
   @Input()
   public group: boolean;
   @Output() public removeItemOptionEvent: EventEmitter<string> = new EventEmitter<string>();
@@ -65,6 +70,9 @@ export class NgSelectDropdownComponent implements AfterViewInit, OnDestroy, OnCh
   public dataMultiple: string[];
   public dataSingle: string;
   public displayData: any;
+  public searchControl: FormControl;
+  public currentOptions: NameValueSelect[] | NameValueGroup[] = [];
+  public orginalOptions: NameValueSelect[] | NameValueGroup[] = [];
 
   public hideElements = 0;
   private $destroy: Subject<boolean> = new Subject<boolean>();
@@ -76,7 +84,8 @@ export class NgSelectDropdownComponent implements AfterViewInit, OnDestroy, OnCh
 
   constructor(
     private dropdownService: DropdownService,
-    private changeDetechRef: ChangeDetectorRef
+    private changeDetechRef: ChangeDetectorRef,
+    private formBuilder: FormBuilder
   ) {
     this.dropdownService.register(this);
   }
@@ -86,6 +95,10 @@ export class NgSelectDropdownComponent implements AfterViewInit, OnDestroy, OnCh
   @HostListener('window: resize', [])
   public onResize(): void {
     this.calcItemsChange();
+  }
+
+  ngOnInit(): void {
+    this.initFormSearch();
   }
 
   /**
@@ -201,7 +214,7 @@ export class NgSelectDropdownComponent implements AfterViewInit, OnDestroy, OnCh
       this.displayData = this.group ? (this.options as NameValueGroup[])?.find(
         option => this.dataSingle && option.items.find(item => item.value === this.dataSingle)
       )?.label
-      :
+        :
         (this.options as NameValueSelect[])?.find(
           option => this.dataSingle && option.value === this.dataSingle
         )?.label;
@@ -248,6 +261,16 @@ export class NgSelectDropdownComponent implements AfterViewInit, OnDestroy, OnCh
     this.removeItemOptionEvent.emit(value);
   }
 
+  public onDropdownClosed(): void {
+    this.searchControl.setValue('');
+  }
+
+  public addOption(): void {
+    (this.orginalOptions as NameValueSelect[]).push({value: this.searchControl.value, label: this.searchControl.value} as NameValueSelect);
+    (this.currentOptions as NameValueSelect[]).push({value: this.searchControl.value, label: this.searchControl.value} as NameValueSelect);
+    (this.currentOptions as NameValueSelect[]) = [...(this.currentOptions as NameValueSelect[])];
+  }
+
   private calcItemsChange(): void {
     this.hideElements = 0;
     this.changeDetechRef.detectChanges();
@@ -259,8 +282,8 @@ export class NgSelectDropdownComponent implements AfterViewInit, OnDestroy, OnCh
       this.containerWidth = this.tagBlock.nativeElement.offsetWidth;
       if (
         listTags[i].nativeElement.offsetWidth +
-          listTags[i].nativeElement.offsetLeft -
-          this.tagBlock.nativeElement.offsetLeft >
+        listTags[i].nativeElement.offsetLeft -
+        this.tagBlock.nativeElement.offsetLeft >
         this.containerWidth - (this.hideElements > 0 ? this.threedotWidth : 0)
       ) {
         listTags[i].nativeElement.style.visibility = 'hidden';
@@ -297,5 +320,22 @@ export class NgSelectDropdownComponent implements AfterViewInit, OnDestroy, OnCh
       this.hideElements += 1;
       this.changeDetechRef.detectChanges();
     }
+  }
+
+  private initFormSearch(): void {
+    this.searchControl = this.formBuilder.control('');
+    this.searchControl.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      takeUntil(this.$destroy)
+    ).subscribe((value: string) => {
+      this.changeDetechRef.markForCheck();
+      if (!value || this.group) {
+        this.currentOptions = this.orginalOptions;
+        return;
+      }
+      this.currentOptions = (this.orginalOptions as NameValueSelect[]).filter(option =>
+        option.label.toUpperCase().includes(value.toUpperCase()));
+    });
   }
 }

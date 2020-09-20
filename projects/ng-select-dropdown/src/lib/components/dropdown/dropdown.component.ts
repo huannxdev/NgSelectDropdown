@@ -1,6 +1,6 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortal } from '@angular/cdk/portal';
-import { Component, HostListener, Input, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'lib-custom-dropdown',
@@ -13,6 +13,8 @@ import { Component, HostListener, Input, ViewChild } from '@angular/core';
 export class DropdownComponent {
   @Input()
   public reference: HTMLElement;
+  @Output()
+  public eventClosed: EventEmitter<boolean> = new EventEmitter();
 
   @ViewChild(CdkPortal)
   public contentTemplate: CdkPortal;
@@ -35,6 +37,7 @@ export class DropdownComponent {
     this.overlayRef.detach();
     this.overlayRef.dispose();
     this.showing = false;
+    this.eventClosed.emit(true);
   }
 
   @HostListener('window:resize')
