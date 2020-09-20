@@ -8,8 +8,6 @@ import { DropdownService } from './providers/dropdown.service';
 import { MultiSelectOptionComponent } from './components/multi-select-option/multi-select-option.component';
 import { NgSelectDropdownComponent } from './components/ng-select-dropdown.component';
 import { SingleSelectContainerComponent } from './components/single-select-container/single-select-container.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { FormatIdStringPipe } from './pipe/formatIdString.pipe';
 
 @NgModule({
@@ -25,8 +23,6 @@ import { FormatIdStringPipe } from './pipe/formatIdString.pipe';
     PortalModule,
     OverlayModule,
     FormsModule,
-    MatButtonModule,
-    MatIconModule,
     ReactiveFormsModule,
   ],
   providers: [DropdownService

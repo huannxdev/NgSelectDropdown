@@ -126,8 +126,8 @@ export class NgSelectDropdownComponent implements AfterViewInit, OnDestroy, OnCh
           }
         });
         this.calcItemsChange();
+        this.changeDetechRef.detectChanges();
       }
-      this.changeDetechRef.detectChanges();
     });
   }
 
@@ -258,8 +258,10 @@ export class NgSelectDropdownComponent implements AfterViewInit, OnDestroy, OnCh
       listTags[i].nativeElement.style.visibility = 'visible';
       this.containerWidth = this.tagBlock.nativeElement.offsetWidth;
       if (
-        listTags[i].nativeElement.offsetWidth + listTags[i].nativeElement.offsetLeft >
-        this.containerWidth - this.threedotWidth
+        listTags[i].nativeElement.offsetWidth +
+          listTags[i].nativeElement.offsetLeft -
+          this.tagBlock.nativeElement.offsetLeft >
+        this.containerWidth - (this.hideElements > 0 ? this.threedotWidth : 0)
       ) {
         listTags[i].nativeElement.style.visibility = 'hidden';
         this.hideElements += 1;
@@ -272,11 +274,15 @@ export class NgSelectDropdownComponent implements AfterViewInit, OnDestroy, OnCh
           this.contentToElementNeedReCheck = totalElementWidth;
         }
       }
-      totalElementWidth = listTags[i].nativeElement.offsetWidth + listTags[i].nativeElement.offsetLeft;
+      totalElementWidth =
+        listTags[i].nativeElement.offsetWidth +
+        listTags[i].nativeElement.offsetLeft;
     }
     this.changeDetechRef.detectChanges();
     this.reCheckTagElement();
-    this.threedotWidth = this.moreElement ? this.moreElement.nativeElement.offsetWidth : 0;
+    this.threedotWidth = this.moreElement
+      ? this.moreElement.nativeElement.offsetWidth
+      : 0;
   }
 
   private reCheckTagElement(): void {

@@ -1,5 +1,5 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortalDirective } from '@angular/cdk/portal';
+import { CdkPortal } from '@angular/cdk/portal';
 import { Component, HostListener, Input, ViewChild } from '@angular/core';
 
 @Component({
@@ -14,8 +14,8 @@ export class DropdownComponent {
   @Input()
   public reference: HTMLElement;
 
-  @ViewChild(TemplatePortalDirective)
-  public contentTemplate: TemplatePortalDirective;
+  @ViewChild(CdkPortal)
+  public contentTemplate: CdkPortal;
 
   protected overlayRef: OverlayRef;
 
