@@ -309,7 +309,7 @@ export class NgSelectDropdownComponent implements AfterViewInit, OnDestroy, OnCh
   }
 
   private reCheckTagElement(): void {
-    if (this.indexNeedReCheck === -1) { return; }
+    if (this.indexNeedReCheck <= 0) { return; }
     if (
       this.contentToElementNeedReCheck >
       this.tagBlock.nativeElement.offsetWidth - this.threedotWidth

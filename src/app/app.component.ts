@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'ng-select-dropdown';
   public options = [
-    {label: 'Pellentesque 1', value: 'Pellentesque 1'},
+    {label: 'Pellentesque 1Pellentesque 1Pellentesque 1Pellentesque 2231', value: 'Pellentesque 1'},
     {label: 'Pellentesque 2', value: 'Pellentesque 2'},
     {label: 'Pellentesque 3', value: 'Pellentesque 3'},
     {label: 'Pellentesque 4', value: 'Pellentesque 4'},
