@@ -284,7 +284,7 @@ export class NgSelectDropdownComponent implements AfterViewInit, OnDestroy, OnCh
         listTags[i].nativeElement.offsetWidth +
         listTags[i].nativeElement.offsetLeft -
         this.tagBlock.nativeElement.offsetLeft >
-        this.containerWidth - (this.hideElements > 0 ? this.threedotWidth : 0)
+        this.containerWidth - (this.hideElements > 0 ? this.threedotWidth : 0) && i > 0
       ) {
         listTags[i].nativeElement.style.visibility = 'hidden';
         this.hideElements += 1;

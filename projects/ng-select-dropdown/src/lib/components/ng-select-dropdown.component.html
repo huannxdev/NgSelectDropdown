@@ -5,7 +5,7 @@
             <div class="tag-editor" #tagBlock>
                 <span [ngClass]="{ single: !multiple }" class="elements flex">
                     <ng-container *ngIf="multiple">
-                        <div *ngFor="let item of displayData" #tag>
+                        <div *ngFor="let item of displayData ;let i = index" #tag [ngClass]="{'first-element': i === 0}">
                             <span class="tag-editor-tag">{{ item.label }}</span>
                 <div class="tag-editor-delete" (click)="!isDisabled ? removeItem(item.value) : false">
                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -20,7 +20,7 @@
             </ng-container>
 
             <div *ngIf="!multiple" class="single-tag" [ngClass]="{ 'placeHolder-text': !displayData }">
-                {{ displayData ? displayData : placeHolder }}
+                <span>{{ displayData ? displayData : placeHolder }}</span>
             </div>
             </span>
             <span *ngIf="hideElements > 0" class="more-text" #moreElement>...</span>

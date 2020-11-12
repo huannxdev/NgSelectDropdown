@@ -1,6 +1,8 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortal } from '@angular/cdk/portal';
-import { Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { fromEvent, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'lib-custom-dropdown',
@@ -9,8 +11,9 @@ import { Component, EventEmitter, HostListener, Input, Output, ViewChild } from 
       <ng-content></ng-content>
     </ng-template>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DropdownComponent {
+export class DropdownComponent implements OnDestroy {
   @Input()
   public reference: HTMLElement;
   @Output()
@@ -22,14 +25,18 @@ export class DropdownComponent {
   protected overlayRef: OverlayRef;
 
   public showing = false;
+  private destroy$: Subject<boolean> = new Subject();
 
-  constructor(protected overlay: Overlay) {}
+  private windowResize$ = fromEvent(window, 'resize');
+
+  constructor(protected overlay: Overlay) { }
 
   public show(): void {
     this.overlayRef = this.overlay.create(this.getOverlayConfig());
     this.overlayRef.attach(this.contentTemplate);
     this.syncWidth();
-    this.overlayRef.backdropClick().subscribe(() => this.hide());
+    this.windowResize$.pipe(takeUntil(this.destroy$)).subscribe(() => this.syncWidth());
+    this.overlayRef.outsidePointerEvents().pipe(takeUntil(this.destroy$)).subscribe(() => this.hide());
     this.showing = true;
   }
 
@@ -38,6 +45,11 @@ export class DropdownComponent {
     this.overlayRef.dispose();
     this.showing = false;
     this.eventClosed.emit(true);
+  }
+
+  public ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
 
   @HostListener('window:resize')
@@ -67,7 +79,6 @@ export class DropdownComponent {
 
     return new OverlayConfig({
       backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
       positionStrategy: currentPositionStrategy,
     });
   }
